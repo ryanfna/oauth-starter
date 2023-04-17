@@ -1,8 +1,12 @@
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/oauth?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh
+    username: root
+    password: 112233
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: <clientID>
-            client-secret: <clientSecret>
+            client-id: 643221851565-pnmi3kuuserbnfa652clkba8l6jbqdo7.apps.googleusercontent.com
+            client-secret: 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
