@@ -1,0 +1,14 @@
+version: "3"
+services:
+  database:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=112233
+      - MYSQL_DATABASE=oauth
+    ports:
+        - "3306:3306"
+    volumes:
+        - mysql:/var/lib/mysql
+volumes:
+    mysql:
