@@ -1,14 +1,17 @@
 package com.example.oauthstarter.domain.constant;
 
-//TODO: rèfactor this
 public enum AuthProvider {
-    local,
-    facebook,
-    google,
-    github;
+    LOCAL,
+    FACEBOOK,
+    GOOGLE,
+    GITHUB;
 
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 
     public static AuthProvider ofDefault() {
-        return local;
+        return LOCAL;
     }
 }
