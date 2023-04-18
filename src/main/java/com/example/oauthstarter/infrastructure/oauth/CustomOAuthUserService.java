@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class CustomOAuthUserService extends DefaultOAuth2UserService {
@@ -37,35 +39,43 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(userRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if (StringUtils.hasText(oAuth2UserInfo.getEmail())) {
+        if (!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
             throw new GlobalAppException("Email not found from OAuth2 provider");
         }
 
-        User user = userDao.findByEmail(oAuth2UserInfo.getEmail())
-                .orElse(registerNewUser(userRequest, oAuth2UserInfo));
-        if (!user.getProvider().equals(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId()))) {
-            throw new GlobalAppException("Looks like you're signed up with " +
-                    user.getProvider() + " account. Please use your " +
-                    user.getProvider() + " account to login.");
-        }
-        user = updateExistingUser(user, oAuth2UserInfo);
+        Optional<User> userOpt = userDao.findByEmail(oAuth2UserInfo.getEmail());
+
+        User user = userOpt.map(value -> {
+                    if (!value.getProvider().equals(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId()))) {
+                        throw new GlobalAppException("Looks like you're signed up with " +
+                                value.getProvider() + " account. Please use your " +
+                                value.getProvider() + " account to login.");
+                    }
+                    return updateExistingUser(value, oAuth2UserInfo);
+                })
+                .orElseGet(() -> registerNewUser(userRequest, oAuth2UserInfo));
         return AuthUserDetails.of(user);
     }
 
     private User registerNewUser(OAuth2UserRequest userRequest, OAuth2UserInfo oAuth2UserInfo) {
-        return User.builder()
+        User user = User.builder()
                 .withEmail(oAuth2UserInfo.getEmail())
                 .withName(oAuth2UserInfo.getName())
                 .withEmailVerified(true)
-                .withProvider(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId()))
+                .withProvider(getProvider(userRequest))
                 .withProviderId(oAuth2UserInfo.getId())
                 .withImageUrl(oAuth2UserInfo.getImageUrl())
                 .build();
+        return userDao.save(user);
     }
 
     private User updateExistingUser(User user, OAuth2UserInfo oAuth2UserInfo) {
         user.setName(oAuth2UserInfo.getName());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userDao.save(user);
+    }
+
+    private AuthProvider getProvider(OAuth2UserRequest userRequest) {
+        return AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId());
     }
 }

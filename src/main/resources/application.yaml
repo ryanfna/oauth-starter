@@ -8,8 +8,12 @@ spring:
       client:
         registration:
           google:
-            client-id: 643221851565-uf68kvbcut70858rpri6cp248t0i7ti8.apps.googleusercontent.com
-            client-secret: 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
+            clientId: 643221851565-326g2gk94b2buq2doluuajvft7is720c.apps.googleusercontent.com
+            clientSecret: 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
+            redirect-uri: "http://localhost:8080/oauth2/callback/google"
+            scope:
+              - email
+              - profile
 application:
   oauth2:
     tokenExpiration: 864000000

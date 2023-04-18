@@ -59,7 +59,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-
         AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
         String token = tokenProvider.generate(authUserDetails.getUsername());
 

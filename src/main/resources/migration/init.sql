@@ -5,7 +5,7 @@ create table if not exists users (
     password varchar(255),
     image_url varchar(255),
     email_verified boolean default false,
-    provider enum('LOCAL', 'GOOGLE', 'FACEBOOK', 'GITHUB') default 'LOCAL',
+    provider enum('local', 'google', 'facebook', 'github') default 'local',
     provider_id varchar(255),
     primary key (id)
 );

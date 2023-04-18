@@ -31,7 +31,8 @@ public class GlobalAppSecurityConfiguration {
             "/**/*.jpg",
             "/**/*.html",
             "/**/*.css",
-            "/**/*.js"};
+            "/**/*.js"
+    };
     private final AuthUserDetailsService authUserDetailsService;
     private final CustomOAuthUserService customOAuthUserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;

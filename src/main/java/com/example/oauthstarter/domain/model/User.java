@@ -22,9 +22,13 @@ public class User {
 
     private String password;
     private String imageUrl;
+
     @Builder.Default
     private Boolean emailVerified = false;
+
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private AuthProvider provider = AuthProvider.ofDefault();
+
     private String providerId;
 }
