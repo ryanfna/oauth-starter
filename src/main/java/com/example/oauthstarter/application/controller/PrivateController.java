@@ -1,5 +1,6 @@
-package com.example.oauthstarter.application;
+package com.example.oauthstarter.application.controller;
 
+import com.example.oauthstarter.application.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
