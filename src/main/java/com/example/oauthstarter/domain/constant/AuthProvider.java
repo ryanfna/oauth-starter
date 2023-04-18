@@ -6,11 +6,6 @@ public enum AuthProvider {
     GOOGLE,
     GITHUB;
 
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
-
     public static AuthProvider ofDefault() {
         return LOCAL;
     }

@@ -46,7 +46,7 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
         Optional<User> userOpt = userDao.findByEmail(oAuth2UserInfo.getEmail());
 
         User user = userOpt.map(value -> {
-                    if (!value.getProvider().equals(AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId()))) {
+                    if (!value.getProvider().equals(getProvider(userRequest))) {
                         throw new GlobalAppException("Looks like you're signed up with " +
                                 value.getProvider() + " account. Please use your " +
                                 value.getProvider() + " account to login.");
@@ -76,6 +76,6 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
     }
 
     private AuthProvider getProvider(OAuth2UserRequest userRequest) {
-        return AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId());
+        return AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
     }
 }
