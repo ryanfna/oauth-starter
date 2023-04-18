@@ -1,4 +1,4 @@
-package com.example.oauthstarter.infrastructure;
+package com.example.oauthstarter.infrastructure.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,4 +1,4 @@
-package com.example.oauthstarter.application;
+package com.example.oauthstarter.application.dto;
 
 public record UserDto(String username, String name, String email) {
     public static UserDto ofDefault() {
