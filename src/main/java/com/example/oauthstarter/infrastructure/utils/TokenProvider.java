@@ -1,5 +1,6 @@
 package com.example.oauthstarter.infrastructure.utils;
 
+import com.example.oauthstarter.domain.model.AuthUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -23,6 +25,11 @@ public class TokenProvider {
 
     @Value("${application.oauth2.tokenExpiration}")
     private Long tokenExpiration;
+
+    public String createToken(Authentication authentication) {
+        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+        return generate(authUserDetails.getUsername());
+    }
 
     public String generate(String username) {
         Date now = new Date();

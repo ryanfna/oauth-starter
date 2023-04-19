@@ -1,7 +1,7 @@
 package com.example.oauthstarter.infrastructure.security;
 
 import com.example.oauthstarter.domain.model.AuthUserDetails;
-import com.example.oauthstarter.domain.service.AuthUserDetailsService;
+import com.example.oauthstarter.domain.service.AuthUserService;
 import com.example.oauthstarter.infrastructure.utils.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 @Component
-public class TokenAuthFilter extends OncePerRequestFilter {
+public class AuthFilter extends OncePerRequestFilter {
     @Autowired
-    private AuthUserDetailsService userService;
+    private AuthUserService userService;
 
     @Autowired
     private TokenProvider tokenProvider;

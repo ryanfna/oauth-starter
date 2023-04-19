@@ -3,6 +3,8 @@ package com.example.oauthstarter.application.dto;
 import com.example.oauthstarter.domain.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record UserCreateDto(
         String name,
@@ -16,10 +18,11 @@ public record UserCreateDto(
     }
 
     public User toEntity() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return User.builder()
                 .withName(name)
                 .withEmail(email)
-                .withPassword(password)
+                .withPassword(passwordEncoder.encode(password))
                 .build();
     }
 }

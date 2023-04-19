@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AuthUserDetailsService implements UserDetailsService {
+public class AuthUserService implements UserDetailsService {
     private final UserDao userDao;
 
     @Override
