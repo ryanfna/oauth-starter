@@ -1,4 +1,4 @@
-package com.example.oauthstarter.application.dto;
+package com.example.oauthstarter.application.dto.auth;
 
 import com.example.oauthstarter.domain.model.User;
 import jakarta.validation.constraints.Email;

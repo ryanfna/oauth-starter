@@ -1,7 +1,9 @@
 package com.example.oauthstarter.application.controller;
 
-import com.example.oauthstarter.application.dto.UserCreateDto;
-import com.example.oauthstarter.application.dto.UserLoginDto;
+import com.example.oauthstarter.application.dto.auth.LoginInfoDto;
+import com.example.oauthstarter.application.dto.auth.UserCreateDto;
+import com.example.oauthstarter.application.dto.auth.UserLoginDto;
+import com.example.oauthstarter.application.dto.common.ResponseDto;
 import com.example.oauthstarter.domain.service.UserService;
 import com.example.oauthstarter.infrastructure.utils.TokenProvider;
 import jakarta.validation.Valid;
@@ -30,11 +32,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid UserLoginDto dto) {
+    public ResponseDto<LoginInfoDto> login(@RequestBody @Valid UserLoginDto dto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok(tokenProvider.createToken(authentication));
+        return ResponseDto.ok(LoginInfoDto.of(tokenProvider.createToken(authentication)));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.oauthstarter.application.dto;
+package com.example.oauthstarter.application.dto.auth;
 
 public record UserLoginDto(
         String email,
