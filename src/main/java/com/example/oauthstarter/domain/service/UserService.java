@@ -1,5 +1,6 @@
 package com.example.oauthstarter.domain.service;
 
+import com.example.oauthstarter.application.dto.UserDto;
 import com.example.oauthstarter.application.dto.auth.UserCreateDto;
 import com.example.oauthstarter.domain.constant.ResponseCode;
 import com.example.oauthstarter.domain.model.User;
@@ -24,9 +25,10 @@ public class UserService {
                 .getId();
     }
 
-    public User findByEmail(String email) {
-        return userDao.findByEmail(email)
+    public UserDto findByEmail(String email) {
+        User user = userDao.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND, "User not found"));
+        return UserDto.of(user);
     }
 
     private boolean existsByEmail(String email) {
