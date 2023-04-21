@@ -1,8 +1,6 @@
 package com.example.oauthstarter.infrastructure.utils;
 
-import com.example.oauthstarter.domain.constant.ResponseCode;
 import com.example.oauthstarter.domain.model.AuthUserDetails;
-import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
