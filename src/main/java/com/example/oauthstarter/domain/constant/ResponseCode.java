@@ -11,6 +11,7 @@ public enum ResponseCode {
     NO_CONTENT(204, "No Content"),
     BAD_REQUEST(-400, "Bad Request"),
     UNAUTHORIZED(-401, "Unauthorized"),
+    EXPIRED_TOKEN(-10401, "Expired Access Token"),
     FORBIDDEN(-403, "Forbidden"),
     NOT_FOUND(-404, "Resource Not found"),
     CONFLICT(-409, "Conflict"),
