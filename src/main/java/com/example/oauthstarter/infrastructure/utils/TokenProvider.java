@@ -79,12 +79,6 @@ public class TokenProvider {
         return false;
     }
 
-    // is token expired?
-    public boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration)
-                .before(new Date());
-    }
-
     // get claims token
     private Claims getClaims(String token) {
         return makeJwtParser().parseClaimsJws(token).getBody();
