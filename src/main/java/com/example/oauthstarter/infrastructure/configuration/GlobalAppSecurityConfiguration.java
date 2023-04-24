@@ -4,16 +4,15 @@ import com.example.oauthstarter.infrastructure.oauth.CustomOAuthUserService;
 import com.example.oauthstarter.infrastructure.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.oauthstarter.infrastructure.oauth.OAuth2AuthenticationFailureHandler;
 import com.example.oauthstarter.infrastructure.oauth.OAuth2AuthenticationSuccessHandler;
+import com.example.oauthstarter.infrastructure.security.AuthAccessFailureHandler;
 import com.example.oauthstarter.infrastructure.security.AuthEntryPoint;
 import com.example.oauthstarter.infrastructure.security.AuthFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
@@ -46,6 +45,7 @@ public class GlobalAppSecurityConfiguration {
     private final AuthFilter authFilter;
     private final AuthEntryPoint authEntryPoint;
     private final AuthenticationProvider authenticationProvider;
+    private final AuthAccessFailureHandler authAccessFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,32 +54,33 @@ public class GlobalAppSecurityConfiguration {
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
+                .accessDeniedHandler(authAccessFailureHandler)
                 .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(new AntPathRequestMatcher("/auth/**"))
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
+                        .requestMatchers(new AntPathRequestMatcher("/auth/**"))
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.oauth2Login()
-                    .authorizationEndpoint()
-                    .baseUri("/oauth2/authorize")
-                    .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
-                    .redirectionEndpoint()
-                    .baseUri("/oauth2/callback/*")
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
                 .and()
-                    .userInfoEndpoint()
-                    .userService(customOAuthUserService)
+                .userInfoEndpoint()
+                .userService(customOAuthUserService)
                 .and()
-                    .successHandler(oAuth2AuthenticationSuccessHandler)
-                    .failureHandler(oAuth2AuthenticationFailureHandler);
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
         return http.build();
     }
 

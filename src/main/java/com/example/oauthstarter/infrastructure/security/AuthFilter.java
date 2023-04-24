@@ -27,7 +27,10 @@ public class AuthFilter extends OncePerRequestFilter {
     private TokenProvider tokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         String token = extractJwt(request);
         if (tokenProvider.isValid(token)) {
             String username = tokenProvider.getUsernameFromToken(token);
