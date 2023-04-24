@@ -6,7 +6,7 @@ import com.example.oauthstarter.application.dto.auth.UserCreateDto;
 import com.example.oauthstarter.application.dto.auth.UserLoginDto;
 import com.example.oauthstarter.application.dto.common.ResponseDto;
 import com.example.oauthstarter.domain.service.UserService;
-import com.example.oauthstarter.infrastructure.security.AuthService;
+import com.example.oauthstarter.domain.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

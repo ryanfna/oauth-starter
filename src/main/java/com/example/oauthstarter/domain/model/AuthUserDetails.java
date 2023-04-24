@@ -41,6 +41,10 @@ public class AuthUserDetails implements OAuth2User, UserDetails {
         return userAuth;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getPassword() {
         return password;

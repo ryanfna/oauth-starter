@@ -10,4 +10,5 @@ Learning Spring Boot OAuth2 with starter project!
 - [x] Add user info to database
 - [ ] Add refresh token
 - [ ] Add role based access
+- [ ] Add session, device management
 - [ ] Add logout

@@ -32,13 +32,11 @@ public class TokenProvider {
     @Value("${application.oauth2.refreshTokenExpiration}")
     private Long refreshTokenExpiration;
 
-    public String createToken(Authentication authentication) {
-        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+    public String createToken(AuthUserDetails authUserDetails) {
         return buildToken(new HashMap<>(), authUserDetails.getUsername(), accessTokenExpiration);
     }
 
-    public String createRefreshToken(Authentication authentication) {
-        AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+    public String createRefreshToken(AuthUserDetails authUserDetails) {
         return buildToken(new HashMap<>(), authUserDetails.getUsername(), refreshTokenExpiration);
     }
 

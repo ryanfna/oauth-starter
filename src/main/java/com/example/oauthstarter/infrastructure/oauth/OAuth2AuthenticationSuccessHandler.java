@@ -1,5 +1,6 @@
 package com.example.oauthstarter.infrastructure.oauth;
 
+import com.example.oauthstarter.domain.model.AuthUserDetails;
 import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
 import com.example.oauthstarter.infrastructure.utils.CookieUtils;
 import com.example.oauthstarter.infrastructure.utils.TokenProvider;
@@ -58,7 +59,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        String token = tokenProvider.createToken(authentication);
+        AuthUserDetails authUser = (AuthUserDetails) authentication.getPrincipal();
+        String token = tokenProvider.createToken(authUser);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
