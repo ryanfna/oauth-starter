@@ -1,5 +1,7 @@
 package com.example.oauthstarter.application.dto.auth;
 
+import com.example.oauthstarter.application.validator.ValidEnum;
+import com.example.oauthstarter.domain.constant.UserRole;
 import com.example.oauthstarter.domain.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -11,10 +13,12 @@ public record UserCreateDto(
         @Email(message = "Email should be valid")
         String email,
         @Size(min = 8, message = "Password should be at least 8 characters")
-        String password
+        String password,
+        @ValidEnum(enumClass = UserRole.class, message = "Role should be one of USER, ADMIN, MODERATOR")
+        String role
 ) {
-    public static UserCreateDto of(String name, String email, String password) {
-        return new UserCreateDto(name, email, password);
+    public static UserCreateDto of(String name, String email, String password, String role) {
+        return new UserCreateDto(name, email, password, role);
     }
 
     public User toEntity() {
@@ -23,6 +27,7 @@ public record UserCreateDto(
                 .withName(name)
                 .withEmail(email)
                 .withPassword(passwordEncoder.encode(password))
+                .withRole(UserRole.valueOf(role))
                 .build();
     }
 }

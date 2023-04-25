@@ -26,7 +26,7 @@ public class AuthUserDetails implements OAuth2User, UserDetails {
 
     public static AuthUserDetails of(User user) {
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                singletonList(new SimpleGrantedAuthority(user.getRole().getAuthority()));
         return new AuthUserDetails(
                 user.getId(),
                 user.getEmail(),

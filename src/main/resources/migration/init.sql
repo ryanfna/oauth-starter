@@ -10,6 +10,8 @@ create table if not exists users (
     provider_id varchar(255),
     primary key (id)
 );
+alter table users add unique (email);
+alter table users add role enum('USER', 'ADMIN', 'MODERATOR') default 'USER';
 
 drop table if exists tokens;
 create table if not exists tokens (

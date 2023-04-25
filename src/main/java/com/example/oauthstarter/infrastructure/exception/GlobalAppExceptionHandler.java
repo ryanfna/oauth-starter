@@ -7,13 +7,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Objects;
+
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 @ResponseBody
-public class GlobalAppExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalAppExceptionHandler {
 
     @ExceptionHandler(GlobalAppException.class)
     @ResponseStatus(HttpStatus.GONE)
@@ -36,7 +41,18 @@ public class GlobalAppExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseDto.error(exp.getResponseCode(), exp.getMessage());
     }
 
-    // handle ExpiredJwtException
+    @ExceptionHandler({BindException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseDto<Object> handleMethodArgumentNotValidException(HttpServletRequest req, BindException exp) {
+        log.error("[BindException]: {} - {}", req.getRequestURI(), exp.getMessage());
+        final FieldError fieldError = exp.getFieldError();
+        if (Objects.nonNull(fieldError)) {
+            log.error(fieldError.getDefaultMessage());
+            return ResponseDto.error(ResponseCode.BAD_REQUEST, fieldError.getDefaultMessage());
+        }
+        return ResponseDto.error(ResponseCode.BAD_REQUEST);
+    }
+
     @ExceptionHandler({ExpiredJwtException.class, AuthenticationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseDto<Object> handleExpiredJwtException(HttpServletRequest req, Exception exp) {

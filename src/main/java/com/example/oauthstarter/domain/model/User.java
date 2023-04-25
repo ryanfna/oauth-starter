@@ -1,6 +1,7 @@
 package com.example.oauthstarter.domain.model;
 
 import com.example.oauthstarter.domain.constant.AuthProvider;
+import com.example.oauthstarter.domain.constant.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,10 @@ public class User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private AuthProvider provider = AuthProvider.ofDefault();
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.ofDefault();
 
     private String providerId;
 }
