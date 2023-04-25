@@ -41,6 +41,10 @@ public class AuthService {
         var accessToken = tokenProvider.createToken(authUser);
         var refreshToken = tokenProvider.createRefreshToken(authUser);
         tokenService.storeToken(refreshToken, authUser.getId());
-        return LoginInfoDto.of(accessToken, refreshToken);
+        var role = String.join(",", authUser.getAuthorities()
+                .stream()
+                .map(Object::toString)
+                .toArray(String[]::new));
+        return LoginInfoDto.of(accessToken, refreshToken, role);
     }
 }
