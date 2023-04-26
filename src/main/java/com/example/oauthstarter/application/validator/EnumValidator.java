@@ -11,17 +11,14 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, CharSequenc
     private List<String> acceptedValues;
 
     @Override
-    public void initialize(ValidEnum constraintAnnotation) {
-        acceptedValues = Stream.of(constraintAnnotation.enumClass().getEnumConstants())
+    public void initialize(ValidEnum annotation) {
+        acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
                 .map(Enum::name)
                 .toList();
     }
 
     @Override
     public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-        if (Objects.isNull(value)) {
-            return true;
-        }
-        return acceptedValues.contains(value.toString());
+        return Objects.nonNull(value) && acceptedValues.contains(value.toString());
     }
 }
