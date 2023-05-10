@@ -15,10 +15,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -29,18 +32,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity
 @AllArgsConstructor
 public class GlobalAppSecurityConfiguration {
-    private static final String[] WHITE_LIST = {
-            "/",
-            "/error",
-            "/favicon.ico",
-            "/**/*.png",
-            "/**/*.gif",
-            "/**/*.svg",
-            "/**/*.jpg",
-            "/**/*.html",
-            "/**/*.css",
-            "/**/*.js"
-    };
     private final CustomOAuthUserService customOAuthUserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
@@ -48,28 +39,35 @@ public class GlobalAppSecurityConfiguration {
     private final AuthEntryPoint authEntryPoint;
     private final AuthenticationProvider authenticationProvider;
     private final AuthAccessFailureHandler authAccessFailureHandler;
+    private final LogoutHandler logoutHandler;
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return (request, response, authentication) ->
+                SecurityContextHolder.clearContext();
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(withDefaults())
                 .csrf()
                 .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint)
-                .accessDeniedHandler(authAccessFailureHandler)
-                .and()
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/auth/**"))
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout.logoutUrl("/auth/logout")
+                        .permitAll()
+                        .logoutSuccessHandler(logoutSuccessHandler())
+                        .addLogoutHandler(logoutHandler))
+                .exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)
+                .accessDeniedHandler(authAccessFailureHandler);
         http.oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorize")

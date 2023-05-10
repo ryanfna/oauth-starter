@@ -8,6 +8,7 @@ import com.example.oauthstarter.infrastructure.utils.TokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,9 +21,10 @@ public class AuthService {
 
 
     public LoginInfoDto login(UserLoginDto dto) {
-        authenticationManager.authenticate(
+        var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
         );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         var authUser = userService.loadUserByUsername(dto.email());
         return toLoginInfoDto(authUser);
     }
