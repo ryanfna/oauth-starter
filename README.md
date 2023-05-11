@@ -12,3 +12,10 @@ Learning Spring Boot OAuth2 with starter project!
 - [x] Add role based access
 - [ ] Add session, device management
 - [ ] Add logout
+
+
+### 📖 Guide
+- Run with **docker compose** command below:
+```bash
+docker compose up
+```
