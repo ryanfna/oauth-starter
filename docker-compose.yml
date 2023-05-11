@@ -1,16 +1,14 @@
 version: "3"
 services:
   app:
+    container_name: spring-oauth2
     build: .
     environment:
       - MYSQL_HOST=mysqldb
     ports:
       - "8080:8080"
-    networks:
-        - oauth2
-    depends_on:
-      - mysqldb
   mysqldb:
+    container_name: mysqldb
     image: mysql:latest
     restart: always
     environment:
@@ -20,9 +18,5 @@ services:
         - "3306:3306"
     volumes:
         - mysql:/var/lib/mysql
-    networks:
-      - oauth2
 volumes:
     mysql:
-networks:
-    oauth2:
