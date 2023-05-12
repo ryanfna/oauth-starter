@@ -5,8 +5,18 @@ services:
     build: .
     environment:
       - MYSQL_HOST=mysqldb
+      - REDIRECT_URI=http://localhost:8080
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=112233
+      - GOOGLE_CLIENT_ID=643221851565-326g2gk94b2buq2doluuajvft7is720c.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
+      - TOKEN_SECRET=04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+      - TOKEN_EXPIRATION=86400000
+      - REFRESH_TOKEN_EXPIRATION=604800000
     ports:
       - "8080:8080"
+    depends_on:
+      - mysqldb
   mysqldb:
     container_name: mysqldb
     image: mysql:latest
@@ -20,3 +30,4 @@ services:
         - mysql:/var/lib/mysql
 volumes:
     mysql:
+

@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:3306/oauth?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "${REDIRECT_URI}/oauth2/callback/google"
+            scope:
+              - email
+              - profile
+application:
+  oauth2:
+    accessTokenExpiration: ${TOKEN_EXPIRATION} # 1 minute
+    refreshTokenExpiration: ${REFRESH_TOKEN_EXPIRATION} # 7 days
+    tokenSecret: ${TOKEN_SECRET}
+    authorizedRedirectUris: http://localhost:3000/oauth2/redirect, http://localhost:9999/oauth2/redirect
