@@ -10,6 +10,7 @@ public enum ResponseCode {
     CREATED(201, "Created"),
     NO_CONTENT(204, "No Content"),
     BAD_REQUEST(-400, "Bad Request"),
+    BAD_CREDENTIALS(-10400, "Bad Credentials"),
     UNAUTHORIZED(-401, "Unauthorized"),
     EXPIRED_TOKEN(-10401, "Expired Access Token"),
     FORBIDDEN(-403, "Forbidden"),

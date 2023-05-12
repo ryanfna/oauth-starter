@@ -6,12 +6,14 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Objects;
 
@@ -58,10 +60,14 @@ public class GlobalAppExceptionHandler {
     public ResponseDto<Object> handleExpiredJwtException(HttpServletRequest req, Exception exp) {
         if (exp instanceof ExpiredJwtException || exp.getCause() instanceof ExpiredJwtException) {
             log.error("[ExpiredJwtException]: {} - {}", req.getRequestURI(), exp.getMessage());
-            return ResponseDto.error(ResponseCode.EXPIRED_TOKEN);
+            return ResponseDto.error(ResponseCode.EXPIRED_TOKEN, exp.getMessage());
+        }
+        if (exp instanceof BadCredentialsException || exp.getCause() instanceof BadCredentialsException) {
+            log.error("[BadCredentialsException]: {} - {}", req.getRequestURI(), exp.getMessage());
+            return ResponseDto.error(ResponseCode.BAD_CREDENTIALS);
         }
         log.error("[AuthenticationException]: {} - {}", req.getRequestURI(), exp.getMessage());
-        return ResponseDto.error(ResponseCode.UNAUTHORIZED);
+        return ResponseDto.error(ResponseCode.UNAUTHORIZED, exp.getMessage());
     }
 
 
