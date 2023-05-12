@@ -19,3 +19,5 @@ Learning Spring Boot OAuth2 with starter project!
 ```bash
 docker compose up
 ```
+
+- Run init script to create database and tables in `init.sql`
