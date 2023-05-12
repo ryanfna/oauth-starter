@@ -5,11 +5,10 @@ import com.example.oauthstarter.application.dto.auth.RefreshTokenDto;
 import com.example.oauthstarter.application.dto.auth.UserCreateDto;
 import com.example.oauthstarter.application.dto.auth.UserLoginDto;
 import com.example.oauthstarter.application.dto.common.ResponseDto;
-import com.example.oauthstarter.domain.service.UserService;
 import com.example.oauthstarter.domain.service.AuthService;
+import com.example.oauthstarter.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,8 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@RequestBody @Valid UserCreateDto dto) {
-        return ResponseEntity.ok(userService.create(dto));
+    public ResponseDto<Long> register(@RequestBody @Valid UserCreateDto dto) {
+        return ResponseDto.ok(userService.create(dto));
     }
 
     @PostMapping("/login")
