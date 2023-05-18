@@ -15,6 +15,11 @@ spring:
             scope:
               - email
               - profile
+  minio:
+    endpoint: http://localhost:9000
+    bucketName: avatar
+    accessKey: 62A860G7Q7KcGF2p
+    secretKey: kjzKpu9cDdqPQD7h62UIWAeeWgOHbaKP
 application:
   oauth2:
     accessTokenExpiration: 86400000 # 1 minute
