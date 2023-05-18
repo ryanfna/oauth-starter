@@ -31,6 +31,14 @@ public class UserService {
         return UserDto.of(user);
     }
 
+    public UserDto updateAvatar(Long id, String avatarUrl) {
+        User user = userDao.findById(id)
+                .orElseThrow(() -> new NotFoundException(ResponseCode.NOT_FOUND, "User not found"));
+        user.setImageUrl(avatarUrl);
+        userDao.save(user);
+        return UserDto.of(user);
+    }
+
     private boolean existsByEmail(String email) {
         return userDao.existsUserByEmail(email);
     }
