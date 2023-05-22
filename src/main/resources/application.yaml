@@ -18,8 +18,8 @@ spring:
   minio:
     endpoint: http://localhost:9000
     bucketName: avatar
-    accessKey: 2toxGr9rkiDV77KG
-    secretKey: b1lnyNTlc0FJECAxCE4phPYrSKLcpx9G
+    accessKey: tinhtute
+    secretKey: vodichtoanvutru
 application:
   oauth2:
     accessTokenExpiration: 86400000 # 1 minute

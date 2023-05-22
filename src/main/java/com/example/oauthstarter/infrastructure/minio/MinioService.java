@@ -27,7 +27,7 @@ public class MinioService {
 
     public String generatePresignedUrl(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("File name: {}", fileName);
-        var params = Map.of("Content-Type", "application/octet-stream");
+        var params = Map.of("response-content-type", "application/json");
         var args = GetPresignedObjectUrlArgs.builder()
                 .method(Method.PUT)
                 .bucket(bucket)
