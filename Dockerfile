@@ -1,10 +1,9 @@
-FROM amazoncorretto:17 AS build
-WORKDIR /app
-COPY . .
-RUN ./gradlew clean build --no-daemon
+FROM gradle:8.1.1-jdk17 AS gradleimage
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon --stacktrace
 
-FROM amazoncorretto:17
-WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+FROM openjdk:17-jdk-slim
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "app.jar"]
+COPY --from=gradleimage /home/gradle/src/build/libs/*.jar /application.jar
+ENTRYPOINT ["java", "-Dspring.profiles.active=docker",  "-jar", "application.jar"]
