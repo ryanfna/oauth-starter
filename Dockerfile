@@ -1,4 +1,4 @@
-FROM gradle:8.1.1-jdk17 AS gradleimage
+FROM gradle:7.6.1-jdk17 AS gradleimage
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle build --no-daemon --stacktrace
