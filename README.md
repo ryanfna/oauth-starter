@@ -3,6 +3,12 @@
 ### 📜 Description
 Learning Spring Boot OAuth2 with starter project!
 
+#### Diagram Guide
+<details>
+  <summary>Click me</summary>
+  <img alt="oauth" src="https://github.com/ryanfna/oauth-starter/assets/51282340/01e8f0bb-3032-4f25-b537-4bb9f9369c5f" />
+</details>
+
 
 ### 📝 Check List
 - [x] OAuth2 with Google
