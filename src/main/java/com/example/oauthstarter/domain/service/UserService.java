@@ -5,7 +5,7 @@ import com.example.oauthstarter.application.dto.auth.UserCreateDto;
 import com.example.oauthstarter.domain.constant.ResponseCode;
 import com.example.oauthstarter.domain.model.User;
 import com.example.oauthstarter.domain.dao.UserDao;
-import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
+import com.example.oauthstarter.infrastructure.exception.AppException;
 import com.example.oauthstarter.infrastructure.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class UserService {
     @Transactional
     public Long create(UserCreateDto dto) {
         if (existsByEmail(dto.email())) {
-            throw new GlobalAppException(ResponseCode.CONFLICT, "User already exists");
+            throw new AppException(ResponseCode.CONFLICT, "User already exists");
         }
         return userDao.save(dto.toEntity())
                 .getId();

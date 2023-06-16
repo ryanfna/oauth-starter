@@ -1,7 +1,7 @@
 package com.example.oauthstarter.infrastructure.oauth;
 
 import com.example.oauthstarter.domain.model.AuthUserDetails;
-import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
+import com.example.oauthstarter.infrastructure.exception.AppException;
 import com.example.oauthstarter.infrastructure.utils.CookieUtils;
 import com.example.oauthstarter.infrastructure.utils.TokenProvider;
 import jakarta.servlet.ServletException;
@@ -55,7 +55,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .map(Cookie::getValue);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new GlobalAppException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
+            throw new AppException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());

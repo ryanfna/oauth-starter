@@ -1,6 +1,6 @@
 package com.example.oauthstarter.infrastructure.oauth.user;
 
-import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
+import com.example.oauthstarter.infrastructure.exception.AppException;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public abstract class OAuth2UserInfo {
         if (registrationId.equalsIgnoreCase("google")) {
             return new GoogleUserInfo(attributes);
         } else {
-            throw new GlobalAppException("Sorry! Login with " + registrationId + " is not supported yet.");
+            throw new AppException("Sorry! Login with " + registrationId + " is not supported yet.");
         }
     }
 

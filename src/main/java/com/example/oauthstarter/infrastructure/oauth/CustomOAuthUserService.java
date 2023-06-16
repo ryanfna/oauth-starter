@@ -4,7 +4,7 @@ import com.example.oauthstarter.domain.constant.AuthProvider;
 import com.example.oauthstarter.domain.dao.UserDao;
 import com.example.oauthstarter.domain.model.AuthUserDetails;
 import com.example.oauthstarter.domain.model.User;
-import com.example.oauthstarter.infrastructure.exception.GlobalAppException;
+import com.example.oauthstarter.infrastructure.exception.AppException;
 import com.example.oauthstarter.infrastructure.oauth.user.OAuth2UserInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -40,14 +40,14 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
     private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(userRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
         if (!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
-            throw new GlobalAppException("Email not found from OAuth2 provider");
+            throw new AppException("Email not found from OAuth2 provider");
         }
 
         Optional<User> userOpt = userDao.findByEmail(oAuth2UserInfo.getEmail());
 
         User user = userOpt.map(value -> {
                     if (!value.getProvider().equals(getProvider(userRequest))) {
-                        throw new GlobalAppException("Looks like you're signed up with " +
+                        throw new AppException("Looks like you're signed up with " +
                                 value.getProvider() + " account. Please use your " +
                                 value.getProvider() + " account to login.");
                     }

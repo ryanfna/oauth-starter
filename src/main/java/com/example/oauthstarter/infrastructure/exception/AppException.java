@@ -4,20 +4,20 @@ import com.example.oauthstarter.domain.constant.ResponseCode;
 import lombok.Getter;
 
 @Getter
-public class GlobalAppException extends RuntimeException {
+public class AppException extends RuntimeException {
     private final ResponseCode responseCode;
 
-    public GlobalAppException(ResponseCode responseCode) {
+    public AppException(ResponseCode responseCode) {
         super(responseCode.getMessage());
         this.responseCode = responseCode;
     }
 
-    public GlobalAppException(ResponseCode responseCode, String message) {
+    public AppException(ResponseCode responseCode, String message) {
         super(message);
         this.responseCode = responseCode;
     }
 
-    public GlobalAppException(String message) {
+    public AppException(String message) {
         super(message);
         this.responseCode = ResponseCode.INTERNAL_ERROR;
     }

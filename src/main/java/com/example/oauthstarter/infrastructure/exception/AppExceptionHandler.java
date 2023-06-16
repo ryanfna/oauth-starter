@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,12 +18,11 @@ import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
-@ResponseBody
-public class GlobalAppExceptionHandler {
+public class AppExceptionHandler {
 
-    @ExceptionHandler(GlobalAppException.class)
+    @ExceptionHandler(AppException.class)
     @ResponseStatus(HttpStatus.GONE)
-    public ResponseDto<Object> globalAppHandler(HttpServletRequest req, GlobalAppException exp) {
+    public ResponseDto<Object> globalAppHandler(HttpServletRequest req, AppException exp) {
         log.error("[GlobalAppException]: {} - {}", req.getRequestURI(), exp.getMessage());
         return ResponseDto.error(exp.getResponseCode(), exp.getMessage());
     }
